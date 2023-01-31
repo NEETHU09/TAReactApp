@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import SearchIcon from '@mui/icons-material/Search';
 
 const rows = [
   {
@@ -76,8 +77,8 @@ export default function SourceFileTable() {
   };
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+    <>
+    <span style={{ display: "flex", justifyContent: "space-between", width: "98%" }}>
     <Tabs value={statusFilter} onChange={handleStatusFilter}>
       <Tab label="All Tasks" value="All" />
       <Tab label="Pending" value="Pending" />
@@ -88,8 +89,8 @@ export default function SourceFileTable() {
       label="Search"
       value={searchTerm}
       onChange={handleSearch}
-    />
-    </div>
+    ><SearchIcon /></TextField>
+    </span>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -114,6 +115,6 @@ export default function SourceFileTable() {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const fs = require("fs");
 
 var users = [
   {
@@ -48,6 +49,19 @@ router.post("/login", function (req, res) {
       role: "User",
     });
   }
+});
+
+
+// binary data
+router.get("/pdf", (req, res) => {
+  fs.readFile("response.txt", (err, data) => {
+    if (err) {
+      res.status(500).send({ error: "Error reading PDF file" });
+    } else {
+      res.set("Content-Type", "application/pdf");
+      res.send(data);
+    }
+  });
 });
 
 module.exports = router;
