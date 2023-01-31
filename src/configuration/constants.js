@@ -2,7 +2,8 @@ const constant = {
     Authorized: "Authorized",
     Unauthorized: "Unauthorized",
     User: "User",
-    Admin: "Admin"
+    Admin: "Admin",
+    Username: "Username"
 }
 
 

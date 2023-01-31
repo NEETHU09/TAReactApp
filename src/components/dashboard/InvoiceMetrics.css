@@ -1,0 +1,32 @@
+.card-style {
+  width: 98%;
+  margin: 0px 1% 0px 1%;
+  color: #474e4b;
+  font-weight: 500;
+}
+
+.kpi-container1, .kpi-container2, .kpi-container3, .kpi-container4 {
+  display: flex;
+  align-items: center;
+}
+
+.kpi-title1, .kpi-title2, .kpi-title3, .kpi-title4 {
+  color: #b5b5b5 !important;
+  margin: 0;
+  vertical-align: middle;
+}
+
+/* .kpi-title2 {
+}
+
+.kpi-title3 {
+}
+
+.kpi-title4 {
+} */
+
+.kpi-icon1, .kpi-icon2, .kpi-icon3, .kpi-icon4 {
+  color: "#799A3D" !important;
+  margin: 0;
+  vertical-align: middle;
+}

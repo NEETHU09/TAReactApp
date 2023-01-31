@@ -3,7 +3,7 @@ var router = express.Router();
 
 var users = [
   {
-    email: "admin@admin.com",
+    username: "admin@admin.com",
     password: "admin123",
     role: "admin",
   },
@@ -15,14 +15,14 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/login", function (req, res) {
-  let username = req?.body?.email;
+  let username = req?.body?.username;
   let password = req?.body?.password;
   let result = users.find((user) => user);
 
-  console.log("result", result.email, result.password, result.role);
+  console.log("result", result.username, result.password, result.role);
   console.log("username", username, ": password : ", password);
 
-  if (username == result.email) {
+  if (username == result.username) {
     if (password == result?.password) {
       console.log("admin");
       

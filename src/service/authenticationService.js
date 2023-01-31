@@ -10,8 +10,6 @@ static authenticateUser = async (user) => {
         const resp = await axios.post(this.authenticationUrl, user);
         let response = resp.data;
 
-        console.log("data from authentication service", response);
-
         if (response) {
             if (response?.message === constant.Authorized) {
                 // sessionStorage.setItem(constant.token, response.data);

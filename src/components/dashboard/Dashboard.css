@@ -1,0 +1,10 @@
+.user-dashboard-style {
+  background-color: rgb(244, 242, 242) !important;
+}
+
+.username-style {
+  font-weight: 500;
+  color: #474e4b;
+  width: 98%;
+  margin: 0px 1% 0px 1%;
+}

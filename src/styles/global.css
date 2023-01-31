@@ -1,0 +1,62 @@
+/* AppBar Styles */
+
+.app-bar {
+  background-color: #ffffff !important;
+}
+
+.toolbar-style {
+  color: black;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-style {
+  cursor: pointer;
+  height: 50px;
+}
+
+.header-name-style {
+  width: 15%;
+  color: black;
+  font-size: large !important;
+  text-align: center;
+  /* font-weight: 500; */
+}
+
+.profile-style {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsiveness */
+@media (max-width: 767px) {
+  .header-name-style {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+/* Profile Styles */
+.username-style {
+  color: black !important;
+}
+
+.username-span {
+  padding-left: 10% !important;
+  text-transform: lowercase;
+}
+
+.username-span::first-letter {
+  text-transform: uppercase;
+}
+
+/* Responsiveness */
+@media (max-width: 767px) {
+  .username-span {
+    padding-left: 0 !important;
+    text-align: center;
+  }
+}
