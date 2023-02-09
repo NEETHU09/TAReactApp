@@ -1,36 +1,61 @@
-// import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import AWS from 'aws-sdk';
 
-// export default function Test() {
-//   const [binaryData, setBinaryData] = useState(null);
-//   const [pdfBlob, setPdfBlob] = useState(null);
+const useA2I = (setData) => {
+  const [data, setTaskData] = useState({});
 
-//   useEffect(() => {
-//     async function fetchData() {
-//       const response = await fetch('http://localhost:8080/pdf');
-//       const binaryData = await response?.arrayBuffer();
-//       setBinaryData(binaryData);
-//     }
+  useEffect(() => {
+    const a2i = new AWS.A2I({ apiVersion: '2019-11-07' });
 
-//     fetchData();
-//   }, []);
+    a2i.getHumanLoop({
+      HumanLoopName: process.env.REACT_APP_HUMAN_LOOP_NAME
+    }).promise()
+      .then(response => {
+        setTaskData({
+          instructions: response.HumanLoopActivationConditions,
+          taskData: response
+        });
+      });
+  }, []);
 
-//   useEffect(() => {
-//     if (!binaryData) {
-//       return;
-//     }
+  return data;
+};
 
-//     const blob = new Blob([binaryData], { type: 'application/pdf' });
-//     setPdfBlob(URL.createObjectURL(blob));
-//   }, [binaryData]);
+const Test = () => {
+  const [instructions, setInstructions] = useState('');
+  const [taskData, setTaskData] = useState(null);
+  const [workerAction, setWorkerAction] = useState('');
 
-//   if (!pdfBlob) {
-//     return null;
-//   }
+  const data = useA2I((data) => {
+    setInstructions(data.instructions);
+    setTaskData(data.taskData);
+  });
 
-//   return (
-//     <div>
-//       <object data={pdfBlob} type="application/pdf" style={{ width: '100%', height: '100%' }} />
-//     </div>
-//   );
-// }
+  const handleSubmit = () => {
+    const a2i = new AWS.A2I({ apiVersion: '2019-11-07' });
 
+    a2i.sendHumanLoopActivationResponse({
+      HumanLoopActivationId: taskData.HumanLoopActivationId,
+      HumanLoopName: taskData.HumanLoopName,
+      TaskName: taskData.TaskName,
+      WorkerAction: workerAction
+    }).promise();
+  };
+
+  return (
+    <div>
+      <h1>Instructions</h1>
+      <p>{instructions}</p>
+
+      <h2>Task Data</h2>
+      <pre>{JSON.stringify(taskData, null, 2)}</pre>
+
+      <h2>Worker Action</h2>
+      <textarea value={workerAction} onChange={e => setWorkerAction(e.target.value)} />
+
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+};
+
+export default Test;

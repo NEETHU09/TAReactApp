@@ -5,6 +5,10 @@
 .username-style {
   font-weight: 500;
   color: #474e4b;
-  width: 98%;
-  /* margin: 0px 1% 0px 1%; */
 }
+
+.metrics-style {
+  padding-bottom: 2% !important;
+}
+
+

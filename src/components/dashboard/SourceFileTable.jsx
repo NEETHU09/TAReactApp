@@ -10,111 +10,143 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
+import { IconButton, Typography } from "@mui/material";
+import { ApiService } from "../../service/apiService";
 
-const rows = [
-  {
-    filename: "File 1",
-    created: "01/01/2023",
-    pendingDuration: "3 days",
-    status: "Pending",
-  },
-  {
-    filename: "File 2",
-    created: "01/02/2023",
-    pendingDuration: "5 days",
-    status: "Approved",
-  },
-  {
-    filename: "File 3",
-    created: "01/03/2023",
-    pendingDuration: "7 days",
-    status: "Rejected",
-  },
-  {
-    filename: "File 4",
-    created: "01/04/2023",
-    pendingDuration: "9 days",
-    status: "Pending",
-  },
-  {
-    filename: "File 5",
-    created: "01/05/2023",
-    pendingDuration: "11 days",
-    status: "Approved",
-  },
-];
+import TablePagination from "@mui/material/TablePagination";
 
 export default function SourceFileTable() {
+  const [rows, getRows] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [statusFilter, setStatusFilter] = React.useState("All");
+  const [statusFilter, setStatusFilter] = React.useState("all");
   const [filteredData, setFilteredData] = React.useState(rows);
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const getSourceFilesData = async () => {
+    await ApiService.getSourceFiles().then((res) => {
+      console.log("res", res);
+      getRows(res);
+      setFilteredData(res);
+    });
+  };
+
+  React.useEffect(() => {
+    getSourceFilesData();
+  }, []);
+
+  // Show data based on search
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
     const filtered = rows.filter(
       (row) =>
         row.filename.toLowerCase().includes(event.target.value.toLowerCase()) ||
         row.created.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        row.pendingDuration
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase()) ||
-        row.status.toLowerCase().includes(event.target.value.toLowerCase())
+        row.pendingDuration.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        row.reviewStatus.toLowerCase().includes(event.target.value.toLowerCase())
     );
     setFilteredData(filtered);
   };
 
+  // Show data based on tab change
   const handleStatusFilter = (event, newValue) => {
     setStatusFilter(newValue);
-    if (newValue === "All") {
+    if (newValue === "all") {
       setFilteredData(rows);
     } else {
       const filtered = rows.filter(
-        (row) => row.status.toLowerCase() === newValue.toLowerCase()
+        (row) => row.reviewStatus.toLowerCase() === newValue.toLowerCase()
       );
       setFilteredData(filtered);
     }
   };
 
+  // Pagination
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
-    <>
-    <span style={{ display: "flex", justifyContent: "space-between", width: "98%" }}>
-    <Tabs value={statusFilter} onChange={handleStatusFilter}>
-      <Tab label="All Tasks" value="All" />
-      <Tab label="Pending" value="Pending" />
-      <Tab label="Approved" value="Approved" />
-      <Tab label="Rejected" value="Rejected" />
-    </Tabs>
-    <TextField
-      label="Search"
-      value={searchTerm}
-      onChange={handleSearch}
-    ><SearchIcon /></TextField>
-    </span>
+    <div className="table-main">
+      <span className="table-span">
+        <Tabs
+          value={statusFilter}
+          onChange={handleStatusFilter}
+          className="table-tabs"
+        >
+          <Tab label="All Tasks" value="all" />
+          <Tab label="Pending" value="pending" />
+          <Tab label="Approved" value="approved" />
+          <Tab label="Rejected" value="rejected" />
+        </Tabs>
+
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <IconButton>
+                <SearchIcon />
+              </IconButton>
+            ),
+          }}
+          value={searchTerm}
+          onChange={handleSearch}
+          className="table-search-textfield"
+          placeholder="Search"
+          variant="outlined"
+          sx={{
+            "& fieldset": { border: "none" },
+          }}
+        />
+      </span>
+      <div className="table-scroll">
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Filename</TableCell>
+              <TableCell>Source File Name</TableCell>
               <TableCell>Created</TableCell>
               <TableCell>Pending Duration</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Review Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.map((row) => (
-              <TableRow key={row.filename}>
-                <TableCell component="th" scope="row">
-                  {row.filename}
-                </TableCell>
-                <TableCell>{row.created}</TableCell>
-                <TableCell>{row.pendingDuration}</TableCell>
-                <TableCell>{row.status}</TableCell>
-              </TableRow>
-            ))}
+            {filteredData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row.filename}>
+                  <TableCell component="th" scope="row">
+                    {row.filename}
+                  </TableCell>
+                  <TableCell>{row.created}</TableCell>
+                  <TableCell>{row.pendingDuration}</TableCell>
+                  <TableCell>{row.reviewStatus}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+      </div>
+      {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'left'}}> */}
+        {/* <Typography variant="subtitle2">Rows per page:</Typography> */}
+        <TablePagination
+          component="div"
+          count={100}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        {/* <Typography variant="subtitle2">
+          // {(page * rowsPerPage) + 1}-{(page + 1) * rowsPerPage > 100 ? 100 : (page + 1) * rowsPerPage} of 100
+        </Typography> */}
+      {/* </div> */}
+    </div>
   );
 }

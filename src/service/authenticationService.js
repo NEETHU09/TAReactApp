@@ -1,5 +1,5 @@
 import axios from "axios";
-import url from '../configuration/config';
+import url from '../configuration/apiConfig';
 import { constant } from "../configuration/constants";
 
 export class AuthService {

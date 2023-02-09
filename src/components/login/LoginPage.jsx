@@ -49,7 +49,7 @@ export default function LoginPage() {
         // console.log("res: ", res);
         console.log("data", data);
         sessionStorage.setItem(
-          "username",
+          constant.username,
           data.username
         );
 

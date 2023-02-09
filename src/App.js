@@ -10,6 +10,7 @@ import DashboardAdmin from "./components/dashboard/DashboardAdmin";
 import InvoicePage from "./components/invoice/InvoicePage";
 import NoPage from "./components/common/NoPage";
 import AppBar from "./components/common/AppBar";
+import Test from "./components/common/Test"
 
 const Router = ({ children }) => (
   <>
@@ -24,7 +25,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/dashboard" element={<Router><DashboardUser /></Router>} />
-        <Route path="/dashboard-admin" element={<Router><DashboardAdmin /></Router>} />
+        {/* <Route path="/dashboard-admin" element={<Router><Test /></Router>} /> */}
         <Route path="/invoice" element={<Router><InvoicePage /></Router>} />
         <Route path="*" element={<NoPage />} />
       </Routes>
