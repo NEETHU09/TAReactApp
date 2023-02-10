@@ -13,7 +13,6 @@ import Tab from "@mui/material/Tab";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, Typography } from "@mui/material";
 import { ApiService } from "../../service/apiService";
-
 import TablePagination from "@mui/material/TablePagination";
 
 export default function SourceFileTable() {
@@ -133,8 +132,6 @@ export default function SourceFileTable() {
         </Table>
       </TableContainer>
       </div>
-      {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'left'}}> */}
-        {/* <Typography variant="subtitle2">Rows per page:</Typography> */}
         <TablePagination
           component="div"
           count={100}
@@ -143,10 +140,6 @@ export default function SourceFileTable() {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        {/* <Typography variant="subtitle2">
-          // {(page * rowsPerPage) + 1}-{(page + 1) * rowsPerPage > 100 ? 100 : (page + 1) * rowsPerPage} of 100
-        </Typography> */}
-      {/* </div> */}
     </div>
   );
 }

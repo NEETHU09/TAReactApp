@@ -29,3 +29,10 @@
     height: 310px !important;
     overflow-y: scroll !important;
 }
+
+.table-scroll table thead th {
+    position: sticky !important;
+    top: 0;
+    background-color: #fff;
+    z-index: 2;
+  }
